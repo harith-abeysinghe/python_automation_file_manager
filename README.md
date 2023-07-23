@@ -1,4 +1,4 @@
-## File Organizer Tool
+## Python Automation File Manager
 
 This Python script provides a simple and efficient file organizer tool that helps you manage and categorize your files into specific folders based on their file types. The script utilizes the popular `tkinter` library for user interaction, allowing you to choose the source folder containing the files to organize and the destination folder where the categorized files will be moved.
 
