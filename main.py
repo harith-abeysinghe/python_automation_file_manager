@@ -2,11 +2,16 @@ import os
 import shutil
 from tkinter.filedialog import askdirectory
 
+#Selcting source folder
 source_path = askdirectory(title="Select Source")
 
+#Getting all files in source
 files = os.listdir(source_path)
+
+#Selcting destination folder
 destination_path = askdirectory(title="Select Destination")
-# Create a new directory
+
+# Create a new directories for different file types
 directory_names = ["PDF", "Video","Zipped Files", "Word Documents", "Excel", "Images"]
 for directory_name in directory_names:
     try:
@@ -15,6 +20,7 @@ for directory_name in directory_names:
         print("Directory Created: " + directory_name)
     except FileExistsError:
         print("Directory Exists: " + directory_name)
+
 # for file in files:
 #     print()
 #     print(file)
