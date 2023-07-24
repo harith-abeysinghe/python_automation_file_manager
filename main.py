@@ -1,12 +1,18 @@
 import os
 import shutil
 from tkinter.filedialog import askdirectory
+from tkfilebrowser import askopendirnames
 
-# Selecting source folder
-source_path = askdirectory(title="Select Source")
+folder_extenstions = {"Images": ['.jpg', '.png', '.jpeg'],
+                      "PDF": [".pdf"],
+                      "Zipped Files": [".zip", ".rar"],
+                      "Documents": [".doc", ".docx", ".txt"],
+                      "Excel": [".xls", ".xlsx", ".csv"],
+                      "Videos": [".mp4", ".mkv", ".webm"],
+                      "Software": [".exe"]
+                      }
 
-# Getting all files in source
-files = os.listdir(source_path)
+folders =askopendirnames()
 
 # Selecting destination folder
 destination_path = askdirectory(title="Select Destination")
@@ -36,14 +42,7 @@ def select_file_type(folder_name, extensions):
             copy_file(source_file_path, destination_file_path)
 
 
-folder_extenstions = {"Images": ['.jpg', '.png', '.jpeg'],
-                      "PDF": [".pdf"],
-                      "Zipped Files": [".zip", ".rar"],
-                      "Documents": [".doc", ".docx", ".txt"],
-                      "Excel": [".xls", ".xlsx", ".csv"],
-                      "Videos": [".mp4", ".mkv", ".webm"],
-                      "Software": [".exe"]
-                      }
+
 if destination_path:
     # Create a new directories for different file types
     directory_names = ["PDF", "Videos", "Zipped Files", "Documents", "Excel", "Images", "Software"]
@@ -55,6 +54,8 @@ if destination_path:
         except FileExistsError:
             print("Directory Exists: " + directory_name)
 
-    for file in files:
-        for folder, extensions in folder_extenstions.items():
-            select_file_type(folder, extensions)
+    for source_path in folders:
+        files = (os.listdir(source_path))
+        for file in files:
+            for folder, extensions in folder_extenstions.items():
+                select_file_type(folder, extensions)
