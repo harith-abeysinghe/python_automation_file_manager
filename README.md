@@ -14,7 +14,7 @@ This Python script provides a simple and efficient file organizer tool that help
    - **PDF**: `.pdf`
    - **Zipped Files**: `.zip`, `.rar`
    - **Documents**: `.doc`, `.docx`, `.txt`
-   - **Excel**: `.xls`, `.xlsx`
+   - **Excel**: `.xls`, `.xlsx`, `.csv`
    - **Videos**: `.mp4`, `.mkv`, `.webm`
    - **Software**: `.exe`
 
