@@ -4,7 +4,7 @@ This Python script provides a simple and efficient file organizer tool that help
 
 ### How it Works
 
-1. The script prompts you to select the source folder from which you want to organize files.
+1. The script prompts you to select the source folder/folders from which you want to organize files.
 2. It then scans the source folder to retrieve a list of all the files present in it.
 3. Next, you are prompted to choose the destination folder where the categorized files will be moved.
 4. The script then defines a function, `copy_file`, which copies each file from the source to the appropriate destination folder based on its file type. After copying, the original file is removed from the source folder.
