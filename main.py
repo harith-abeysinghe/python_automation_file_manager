@@ -40,13 +40,13 @@ folder_extenstions = {"Images": ['.jpg', '.png', '.jpeg'],
                       "PDF": [".pdf"],
                       "Zipped Files": [".zip", ".rar"],
                       "Documents": [".doc", ".docx", ".txt"],
-                      "Excel": [".xls", ".xlsx"],
+                      "Excel": [".xls", ".xlsx", ".csv"],
                       "Videos": [".mp4", ".mkv", ".webm"],
-                      "Software" : [".exe"]
+                      "Software": [".exe"]
                       }
 if destination_path:
     # Create a new directories for different file types
-    directory_names = ["PDF", "Videos", "Zipped Files", "Documents", "Excel", "Images","Software"]
+    directory_names = ["PDF", "Videos", "Zipped Files", "Documents", "Excel", "Images", "Software"]
     for directory_name in directory_names:
         try:
             destination_folder = os.path.join(destination_path, directory_name)
@@ -58,4 +58,3 @@ if destination_path:
     for file in files:
         for folder, extensions in folder_extenstions.items():
             select_file_type(folder, extensions)
-
