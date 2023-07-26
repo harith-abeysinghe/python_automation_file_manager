@@ -9,7 +9,7 @@ folder_extenstions = {"Images": ['.jpg', '.png', '.jpeg'],
                       "Documents": [".doc", ".docx", ".txt"],
                       "Excel": [".xls", ".xlsx", ".csv"],
                       "Videos": [".mp4", ".mkv", ".webm"],
-                      "Software": [".exe"]
+                      "Software": [".exe",".msi"]
                       }
 
 folders =askopendirnames()
