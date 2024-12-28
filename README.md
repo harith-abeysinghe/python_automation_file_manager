@@ -31,7 +31,7 @@ This Python script organizes files from one or more source folders into categori
 1. Edit the script to define the source folders and destination folder.
    ```python
    source_folders = [
-       os.path.expanduser("~/Downloads"),  # Default Downloads folder
+       os.path.expanduser("~\Downloads"),  # Default Downloads folder
        # Add more source folders as needed
    ]
    destination_folder = "D:\\From Downloads"
@@ -46,7 +46,7 @@ This Python script organizes files from one or more source folders into categori
 
 ## Example
 ### Input:
-- Source folder: `~/Downloads`
+- Source folder: `~\Downloads`
 - Destination folder: `D:\From Downloads`
 
 ### Output:
