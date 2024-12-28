@@ -1,35 +1,77 @@
-## Python Automation File Manager
+# File Organizer
 
-This Python script provides a simple and efficient file organizer tool that helps you manage and categorize your files into specific folders based on their file types. The script utilizes the popular `tkinter` library for user interaction, allowing you to choose the source folder containing the files to organize and the destination folder where the categorized files will be moved.
+## Overview
+This Python script organizes files from one or more source folders into categorized subfolders in a specified destination directory. The categories include Images, Documents, Videos, Music, Compressed files, Programs, and Others. It also provides a desktop notification upon completion.
 
-### How it Works
+## Features
+- Automatically organizes files based on their types (e.g., `.jpg` to Images, `.pdf` to Documents).
+- Supports multiple source folders.
+- Creates categorized subfolders in the destination directory.
+- Sends a desktop notification after completing the organization process.
+- Skips directories and processes only files.
+- Handles missing source folders gracefully.
 
-1. The script prompts you to select the source folder/folders from which you want to organize files.
-2. It then scans the source folder to retrieve a list of all the files present in it.
-3. Next, you are prompted to choose the destination folder where the categorized files will be moved.
-4. The script then defines a function, `copy_file`, which copies each file from the source to the appropriate destination folder based on its file type. After copying, the original file is removed from the source folder.
-5. The script categorizes files into different folders based on their file extensions. Supported file types include:
+## Requirements
+- Python 3.6 or higher
+- `plyer` library for desktop notifications
 
-   - **Images**: `.jpg`, `.png`, `.jpeg`
-   - **PDF**: `.pdf`
-   - **Zipped Files**: `.zip`, `.rar`
-   - **Documents**: `.doc`, `.docx`, `.txt`
-   - **Excel**: `.xls`, `.xlsx`, `.csv`
-   - **Videos**: `.mp4`, `.mkv`, `.webm`
-   - **Software**: `.exe`
+## Installation
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/harith-abeysinghe/python_automation_file_manager.git
+   cd python_automation_file_manager
+   ```
 
-6. For each file in the source folder, the script identifies its file type and moves it to the corresponding folder in the destination directory.
+2. Install dependencies:
+   ```bash
+   pip install plyer
+   ```
 
-### How to Use
+## Usage
+1. Edit the script to define the source folders and destination folder.
+   ```python
+   source_folders = [
+       os.path.expanduser("~/Downloads"),  # Default Downloads folder
+       # Add more source folders as needed
+   ]
+   destination_folder = "D:\\From Downloads"
+   ```
 
-1. Clone or download the repository containing the script to your local machine.
-2. Ensure you have Python installed (Python 3.x is recommended).
-3. Run the script in your preferred Python environment.
-4. When prompted, select the source folder containing the files you want to organize.
-5. Next, select the destination folder where the categorized files will be moved.
-6. The script will then create specific folders for each supported file type within the destination folder (if they don't exist already).
-7. Files will be moved from the source folder to their respective folders in the destination directory based on their file extensions.
+2. Run the script:
+   ```bash
+   python main.py
+   ```
 
-Please note that the script may encounter "PermissionError" for certain files if they are currently in use or protected. In such cases, those files will be skipped during the organization process.
+3. The script will process files from all valid source folders and organize them into the specified destination directory.
 
-Enjoy a clean and well-organized file system with this handy file organizer tool!
+## Example
+### Input:
+- Source folder: `~/Downloads`
+- Destination folder: `D:\From Downloads`
+
+### Output:
+The destination folder will have the following structure:
+```
+From Downloads/
+├── Images/
+├── Documents/
+├── Videos/
+├── Music/
+├── Compressed/
+├── Programs/
+└── Others/
+```
+
+## Notifications
+Once the file organization is complete, a desktop notification will display:
+```
+Title: File Organization Complete
+Message: Files from all source folders have been organized into D:\From Downloads.
+```
+
+## Notes
+- The script skips directories and processes only files.
+- If a source folder does not exist, the script will print a warning and skip that folder.
+
+Happy organizing! 🎉
+

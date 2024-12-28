@@ -1,80 +1,76 @@
 import os
 import shutil
-import tkinter as tk
-from tkinter import ttk
-from tkinter.filedialog import askdirectory
-from tkfilebrowser import askopendirnames
+from collections import defaultdict
+from plyer import notification  # For notifications
 
-folder_extenstions = {
-    "Images": ['.jpg', '.png', '.jpeg'],
-    "PDF": [".pdf"],
-    "Zipped Files": [".zip", ".rar"],
-    "Documents": [".doc", ".docx", ".txt"],
-    "Excel": [".xls", ".xlsx", ".csv"],
-    "Videos": [".mp4", ".mkv", ".webm"],
-    "Software": [".exe", ".msi"]
-}
+def organize_files(source_folder, destination_folder):
+    # Define file type categories
+    file_types = {
+        "Images": [".jpeg", ".jpg", ".png", ".gif", ".bmp", ".tiff", ".svg"],
+        "Documents": [".pdf", ".doc", ".docx", ".txt", ".xls", ".xlsx", ".ppt", ".pptx"],
+        "Videos": [".mp4", ".mkv", ".flv", ".avi", ".mov", ".wmv"],
+        "Music": [".mp3", ".wav", ".aac", ".flac", ".ogg"],
+        "Compressed": [".zip", ".rar", ".tar", ".gz", ".7z"],
+        "Programs": [".exe", ".msi"],
+        "Others": []  # For files that do not match the above types
+    }
 
-class FileOrganizerApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("File Organizer")
+    # Create folders in the destination if not exists
+    for folder in file_types:
+        os.makedirs(os.path.join(destination_folder, folder), exist_ok=True)
 
-        self.folders = []
-        self.destination_path = ""
+    # Classify files and move them
+    files_moved = defaultdict(int)
+    for file_name in os.listdir(source_folder):
+        file_path = os.path.join(source_folder, file_name)
 
-        self.select_folders_btn = ttk.Button(root, text="Select Folders", command=self.select_folders)
-        self.select_folders_btn.pack(pady=10)
+        if os.path.isfile(file_path):
+            file_ext = os.path.splitext(file_name)[1].lower()
+            moved = False
 
-        self.select_destination_btn = ttk.Button(root, text="Select Destination", command=self.select_destination)
-        self.select_destination_btn.pack(pady=5)
+            for folder, extensions in file_types.items():
+                if file_ext in extensions:
+                    shutil.move(file_path, os.path.join(destination_folder, folder, file_name))
+                    files_moved[folder] += 1
+                    moved = True
+                    break
 
-        self.organize_btn = ttk.Button(root, text="Organize Files", command=self.organize_files)
-        self.organize_btn.pack(pady=10)
+            if not moved:  # If no matching type, move to 'Others'
+                shutil.move(file_path, os.path.join(destination_folder, "Others", file_name))
+                files_moved["Others"] += 1
 
-        self.output_text = tk.Text(root, height=10, width=50)
-        self.output_text.pack(padx=10, pady=10)
-
-    def select_folders(self):
-        self.folders = askopendirnames()
-
-    def select_destination(self):
-        self.destination_path = askdirectory(title="Select Destination")
-        self.output_text.insert(tk.END, f"Destination selected: {self.destination_path}\n")
-
-    def organize_files(self):
-        if self.destination_path and self.folders:
-            directory_names = ["PDF", "Videos", "Zipped Files", "Documents", "Excel", "Images", "Software"]
-            for directory_name in directory_names:
-                try:
-                    destination_folder = os.path.join(self.destination_path, directory_name)
-                    os.makedirs(destination_folder, exist_ok=True)
-                    self.output_text.insert(tk.END, f"Directory Created: {directory_name}\n")
-                except FileExistsError:
-                    self.output_text.insert(tk.END, f"Directory Exists: {directory_name}\n")
-
-            for source_path in self.folders:
-                files = os.listdir(source_path)
-                for file in files:
-                    for folder, extensions in folder_extenstions.items():
-                        self.select_file_type(folder, extensions, source_path, file)
-
-    def select_file_type(self, folder_name, extensions, source_path, file):
-        if any(file.lower().endswith(extension) for extension in extensions):
-            source_file_path = os.path.join(source_path, file)
-            destination_file_path = os.path.join(self.destination_path, folder_name, file)
-            self.copy_file(source_file_path, destination_file_path)
-
-    def copy_file(self, source_file_path, destination_file_path):
-        try:
-            shutil.copy(source_file_path, destination_file_path)
-            os.remove(source_file_path)
-            self.output_text.insert(tk.END, f"Copied: {source_file_path} to {destination_file_path}\n")
-        except PermissionError:
-            self.output_text.insert(tk.END, f"Permission denied for {source_file_path}. Skipping...\n")
-
+    return files_moved
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = FileOrganizerApp(root)
-    root.mainloop()
+    # Define source folders (multiple sources supported)
+    source_folders = [
+        os.path.expanduser("~/Downloads")  # Default Downloads folder
+        # Add more source folders as needed
+    ]
+    destination_folder = "D:\\From Downloads"
+
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+
+    total_files_moved = defaultdict(int)
+    for source_folder in source_folders:
+        if os.path.exists(source_folder):
+            print(f"Processing files from: {source_folder}")
+            files_moved = organize_files(source_folder, destination_folder)
+            for folder, count in files_moved.items():
+                total_files_moved[folder] += count
+        else:
+            print(f"Source folder not found: {source_folder}")
+
+    # Print summary
+    print("\nFile organization completed!")
+    for folder, count in total_files_moved.items():
+        print(f"{count} file(s) moved to {folder}.")
+
+    # Send a notification
+    notification.notify(
+        title="File Organization Complete",
+        message=f"Files from all source folders have been organized into {destination_folder}.",
+        app_name="File Organizer",
+        timeout=10  # Notification timeout in seconds
+    )
